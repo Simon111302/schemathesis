@@ -35,6 +35,8 @@ def create_booking(booking: BookingRequest, _: bool = Depends(verify_token)) -> 
     # Calculate price based on room type
     room_prices = {"standard": 99.99, "deluxe": 149.99, "suite": 299.99}
 
+    if booking.room_type not in room_prices:
+        raise HTTPException(status_code=400, detail="Invalid room type")
     price_per_night = room_prices[booking.room_type]
     total_price = price_per_night * booking.nights
 

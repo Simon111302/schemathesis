@@ -31,15 +31,20 @@ jobs:
         run: docker compose up -d --build
         working-directory: "./examples/booking"
 
-      # Runs positive Schemathesis tests
       - uses: schemathesis/action@806cace2053cbbac93188e1281ff7da415643160 # v3.0.0
-        continue-on-error: true
         with:
-          # A local API schema location
           schema: "http://127.0.0.1:8080/openapi.json"
+          authorization: "Bearer secret-token"
           max-examples: "10"
-          # To avoid failing the build
-          args: "--include-path does-not-exist"
+          wait-for-schema: "30"
+          args: "--report junit"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@4.6.0
+        if: always()
+        with:
+          name: schemathesis-results
+          path: schemathesis-report/
 
       - name: Stop containers
         if: always()
