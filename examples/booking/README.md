@@ -8,7 +8,7 @@ A sample booking API that demonstrates how Schemathesis automatically discovers 
 
 - Hotel booking creation and retrieval
 - Bearer token authentication
-- Room type validation with an intentional bug
+- Room type validation (returns 400 for invalid room types)
 - Open API 3.1 schema provided by FastAPI
 
 ## Quick Start
@@ -43,7 +43,13 @@ uvx schemathesis run http://localhost:8080/openapi.json \
   --header 'Authorization: Bearer secret-token'
 ```
 
-Schemathesis will discover an edge case that causes a 500 error.
+## GitHub Actions
+
+The **Manual build API example** workflow (`.github/workflows/example-build.yml`) runs Schemathesis against this API in CI.
+
+1. Enable Actions on your fork: [Actions tab](https://github.com/Simon111302/schemathesis/actions) → **I understand my workflows, go ahead and enable them**
+2. Trigger manually: **Actions → Manual build API example → Run workflow**
+3. Or push changes under `examples/booking/` to trigger automatically
 
 ## Example Usage
 
